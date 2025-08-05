@@ -10,6 +10,19 @@ import pretty_plotly as pp
 
 # Functions and Classes
 class MetricManager:
+    """
+    Description:
+    A class to manage and calculate various metrics for regression and classification tasks.
+    This class supports both regression and classification metrics, allowing for flexible metric management.
+
+    Parameters:
+    - type (str): Type of metrics to manage, either "reg" for regression or "cls" for classification.
+    - is_multiclass (bool): If True, uses 'weighted' average for classification metrics; otherwise, uses 'binary'.
+
+    Returns:
+    - None: This class does not return anything; it is used to manage and calculate metrics
+    during training and evaluation.
+    """
     def __init__(self, type="reg", is_multiclass=False):
         assert type in ["reg", "cls"], "Metric type must be 'reg' or 'cls'."
         self.type = type
@@ -46,6 +59,22 @@ class MetricManager:
             self.active_metrics = ["loss", "acc", "prec", "rec", "f1"]
     
     def calculate(self, loss, preds, labels, append_list="", return_metrics=False):
+        """
+        Description:
+        Calculates and appends metrics based on the type of task (regression or classification).
+
+        Parameters:
+        - loss (float): The loss value for the current batch.
+        - preds (array-like): Predicted values from the model.
+        - labels (array-like): True labels for the current batch.
+        - append_list (str): If provided, appends metrics to the specified list ("train" or "val").
+        - return_metrics (bool): If True, returns the calculated metrics; otherwise, appends them to the lists.
+
+        Returns:
+        - tuple: If return_metrics is True, returns a tuple of calculated metrics.
+            * For regression: (loss, rmse, mse, mae, r2)
+            * For classification: (loss, acc, prec, rec, f1)
+        """
         assert append_list in ["", "train", "val"], "append_list must be '', 'train', or 'val'."
         if self.type == "reg":
             # Calculate RMSE, MSE, MAE, and R2 score
@@ -81,6 +110,16 @@ class MetricManager:
             if return_metrics: return loss, acc, prec, rec, f1
     
     def print_metrics(self, epoch=0):
+        """
+        Description:
+        Prints the metrics for the current epoch in a formatted row.
+
+        Parameters:
+        - epoch (int): The current epoch number. Default is 0.
+
+        Returns:
+        - str: A formatted string representing the metrics for the current epoch.
+        """
         result_row = [
             f"{self.metrics["train"][m][-1]:.4f}"
             for m in self.active_metrics
@@ -93,12 +132,31 @@ class MetricManager:
         return f"{epoch+1}".zfill(3) + " " + result_row_str
     
     def reset(self):
+        """
+        Description:
+        Resets the metrics for both training and validation sets.
+
+        Parameters:
+        - None: This method does not take any parameters.
+        """
         self.metrics = {
             k: {m: [] for m in self.metrics[k]}
             for k in self.metrics
         }
 
     def get_metric_name(self, short_hand):
+        """
+        Description:
+        Returns the full name of a metric based on its shorthand notation.
+
+        Parameters:
+        - short_hand (str): The shorthand notation of the metric. Examples include:
+            * "loss", "acc", "prec", "rec", "f1" for classification metrics
+            * "rmse", "mse", "mae", "r2" for regression metrics.
+        
+        Returns:
+        - str: The full name of the metric.
+        """
         # Make sure shorthand is lowercased
         short_hand = short_hand.lower()
 
@@ -127,6 +185,17 @@ class MetricManager:
         }[short_hand]
 
     def get_metric_chart(self, metric_name):
+        """
+        Description:
+        Generates a chart for a specific metric over epochs.
+
+        Parameters:
+        - metric_name (str): The name of the metric to plot. Should be one of the active metrics.
+            * Examples include "loss", "acc", "prec", "rec", "f1", "rmse", "mse", "mae", "r2".
+        
+        Returns:
+        - pp.Figure: A Plotly figure containing the chart for the specified metric.
+        """
         # Get relevant logs
         train_logs = self.metrics["train"][{metric_name}]
         val_logs = self.metrics["val"][{metric_name}]
@@ -164,6 +233,17 @@ class MetricManager:
         return chart
     
     def get_metric_chart_collection(self, metric_names):
+        """
+        Description:
+        Generates a collection of charts for multiple metrics over epochs.
+
+        Parameters:
+        - metric_names (list): A list of metric names to plot. Each name should be one of the active metrics.
+            * Examples include "loss", "acc", "prec", "rec", "f1", "rmse", "mse", "mae", "r2".
+        
+        Returns:
+        - pp.Figure: A Plotly figure containing a collection of charts for the specified metrics
+        """
         # Get charts
         charts = [self.get_metric_chart(n) for n in metric_names]
 
