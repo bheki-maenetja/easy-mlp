@@ -7,10 +7,10 @@ from .helpers import print_row
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.metrics import root_mean_squared_error, mean_squared_error, mean_absolute_error, r2_score
-import pretty_plotly as pp
+import pretty_plotly.plot as pp
 
 # Functions and Classes
-class MetricManager:
+class MetricsManager:
     """
     Description:
     A class to manage and calculate various metrics for regression and classification tasks.
@@ -110,7 +110,7 @@ class MetricManager:
             
             if return_metrics: return loss, acc, prec, rec, f1
     
-    def print_metrics(self, epoch=0):
+    def print_metrics(self, epoch=0, row_len=120):
         """
         Description:
         Prints the metrics for the current epoch in a formatted row.
@@ -122,14 +122,14 @@ class MetricManager:
         - str: A formatted string representing the metrics for the current epoch.
         """
         result_row = [
-            f"{self.metrics["train"][m][-1]:.4f}"
+            f"{self.metrics['train'][m][-1]:.2e}"
             for m in self.active_metrics
         ] + [
-            f"{self.metrics["val"][m][-1]:.4f}"
+            f"{self.metrics['val'][m][-1]:.2e}"
             for m in self.active_metrics
         ]
 
-        result_row_str = print_row(result_row)
+        result_row_str = print_row(result_row, total_len=row_len)
         return f"{epoch+1}".zfill(3) + " " + result_row_str
     
     def reset(self):
@@ -198,8 +198,8 @@ class MetricManager:
         - pp.Figure: A Plotly figure containing the chart for the specified metric.
         """
         # Get relevant logs
-        train_logs = self.metrics["train"][{metric_name}]
-        val_logs = self.metrics["val"][{metric_name}]
+        train_logs = self.metrics["train"][metric_name]
+        val_logs = self.metrics["val"][metric_name]
 
         if val_logs == []:
             val_logs = [np.nan] * len(train_logs)
