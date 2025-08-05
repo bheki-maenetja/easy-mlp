@@ -1,11 +1,12 @@
-# Third-Party Imports
+# Imports
+## Local
+## Standard
+## Third-Party
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
-# Standard Imports
-# Local Imports
-
+# Functions and Classes
 ## Printing Rows
 def print_row(cols, total_len=100, pad_char=" ", side_bound="|", return_str=True):
     """
