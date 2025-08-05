@@ -135,3 +135,49 @@ def param_init(m, init_name):
     elif init_name == "kaiming":
         if type(m) == nn.Linear:
             nn.init.kaiming_normal_(m.weight)
+
+## Activations
+def get_activation(act_name):
+    """
+    Description:
+    Returns a PyTorch activation function based on the provided name.
+
+    Parameters:
+    - act_name (str): Name of the activation function to retrieve. Options include:
+        - "relu": ReLU activation
+        - "elu": Exponential Linear Unit activation
+        - "selu": Scaled Exponential Linear Unit activation
+        - "gelu": Gaussian Error Linear Unit activation
+        - "celu": Continuously Differentiable Exponential Linear Unit activation
+        - "sigmoid": Sigmoid activation
+        - "tanh": Hyperbolic Tangent activation
+        - "mish": Mish activation
+        - "swish": Swish activation
+        - "shrink": Hard Shrink activation
+        - "tanshrink": Tanh Shrink activation
+    
+    Returns:
+    - nn.Module: The corresponding activation function as a PyTorch module.
+    """
+    if act_name == "relu":
+        return nn.ReLU()
+    elif act_name == "elu":
+        return nn.ELU()
+    elif act_name == "selu":
+        return nn.SELU()
+    elif act_name == "gelu":
+        return nn.GELU()
+    elif act_name == "celu":
+        return nn.CELU()
+    elif act_name == "sigmoid":
+        return nn.Sigmoid()
+    elif act_name == "tanh":
+        return nn.Tanh()
+    elif act_name == "mish":
+        return nn.Mish()
+    elif act_name == "swish":
+        return nn.Hardswish()
+    elif act_name == "shrink":
+        return nn.Hardshrink()
+    elif act_name == "tanshrink":
+        return nn.Tanhshrink()
