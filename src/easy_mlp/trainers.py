@@ -2,12 +2,11 @@
 ## Standard
 ## Local
 from .helpers import print_row
-from .metrics import MetricManager
+from .metrics import MetricsManager
 
 ## Third-Party
 import numpy as np
 import torch
-import pretty_plotly as pp
 
 # Functions and Classes
 class MLPTrainer:
@@ -30,7 +29,7 @@ class MLPTrainer:
                 120,
             )
         
-        self.metrics = MetricManager(type=type, is_multiclass=is_multiclass)
+        self.mm = MetricsManager(type=type, is_multiclass=is_multiclass)
 
     def train(
             self, 
@@ -81,7 +80,7 @@ class MLPTrainer:
 
             # Computing training loss and other metrics
             train_loss = train_loss / len(train_loader)
-            self.metrics.calculate(train_loss, train_preds, train_labels, append_list="train")
+            self.mm.calculate(train_loss, train_preds, train_labels, append_list="train")
 
             # Evaluate on validation set
             if val_loader is not None:
@@ -116,8 +115,8 @@ class MLPTrainer:
 
                 # Computing validation loss and other metrics
                 val_loss = val_loss / len(val_loader)
-                self.metrics.calculate(val_loss, val_preds, val_labels, append_list="val")
+                self.mm.calculate(val_loss, val_preds, val_labels, append_list="val")
 
             # Print results for current epoch
-            result_row_str = self.print_metrics(e)
+            result_row_str = self.mm.print_metrics(e)
             print(result_row_str)
