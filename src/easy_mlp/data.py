@@ -57,7 +57,7 @@ def get_tensors(X_train, y_train, X_val=None, y_val=None):
     if y_val is not None:
         y_val = torch.tensor(y_val, dtype=torch.float32).view(-1, 1)
 
-    return X_train, X_val, y_train, y_val
+    return X_train, y_train, X_val, y_val
 
 def get_data_loaders(X_train, y_train, X_val=None, y_val=None, batch_size=1):
     """
