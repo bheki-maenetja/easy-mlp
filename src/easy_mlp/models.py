@@ -8,7 +8,7 @@ import torch.nn as nn
 
 # Functions and Classes
 ## Model Class
-class EasyMLP(nn.Module):
+class MLP(nn.Module):
     """
     Description:
     A simple Multi-Layer Perceptron (MLP) model class for PyTorch.
@@ -23,7 +23,7 @@ class EasyMLP(nn.Module):
     """
     def __init__(self, layer_config, model_name=""):
         # Initialise the superclass
-        super(EasyMLP, self).__init__()
+        super(MLP, self).__init__()
 
         # Set layer configuration and model name
         self.layer_config = layer_config
