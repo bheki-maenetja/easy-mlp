@@ -95,7 +95,7 @@ class MetricsManager:
             if return_metrics: return loss, rmse, mse, mae, r2
         elif self.type == "cls":
             # Calculate accuracy, precision, recall, and F1 score
-            acc = accuracy_score(labels, preds, average=self.avg)
+            acc = accuracy_score(labels, preds)
             prec = precision_score(labels, preds, average=self.avg) 
             rec = recall_score(labels, preds, average=self.avg)
             f1 = f1_score(labels, preds, average=self.avg)
