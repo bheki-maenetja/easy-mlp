@@ -10,6 +10,16 @@ import torch
 
 # Functions and Classes
 class MLPTrainer:
+    """
+    A class for training Multi-Layer Perceptron (MLP) models.
+    This class supports both regression and classification tasks, with options for
+    multiclass classification.
+
+    Parameters:
+    - type (str): Type of task, either "reg" for regression or "cls" for classification.
+    - is_multiclass (bool): If True, the trainer will handle multiclass classification
+      tasks. Default is False, which means binary classification for "cls" type.
+    """
     def __init__(self, type="reg", is_multiclass=False):
         assert type in ["reg", "cls"], "Trainer type must be 'reg' or 'cls'."
 
@@ -42,6 +52,25 @@ class MLPTrainer:
             pred_threshold=0.5,
             device="cpu",
         ):
+        """
+        Train the MLP model on the training set and evaluate it on the validation set.
+
+        Parameters:
+        - model (torch.nn.Module): The MLP model to be trained.
+        - num_epochs (int): Number of epochs to train the model.
+        - optimiser (torch.optim.Optimizer): Optimiser for updating model weights.
+        - loss_fn (callable): Loss function to compute the loss.
+        - train_loader (torch.utils.data.DataLoader): DataLoader for the training set.
+        - val_loader (torch.utils.data.DataLoader, optional): DataLoader for the validation set
+            * If provided, the model will be evaluated on this set after each epoch.
+        - pred_threshold (float): Threshold for binary classification predictions.
+            * Default is 0.5, applicable only for binary classification.
+        - device (str): Device to run the model on, either "cpu" or "cuda".
+            * Default is "cpu".
+        
+        Returns:
+        - None: The function prints the training and validation metrics for each epoch.
+        """
         print("    " + self.header)
         print("    " + self.secondary_header)
 
