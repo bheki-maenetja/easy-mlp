@@ -123,9 +123,13 @@ class MetricsManager:
         """
         result_row = [
             f"{self.metrics['train'][m][-1]:.2e}"
+            if self.metrics['train'][m] != []
+            else f"{np.nan:.2e}"
             for m in self.active_metrics
         ] + [
             f"{self.metrics['val'][m][-1]:.2e}"
+            if self.metrics['val'][m] != []
+            else f"{np.nan:.2e}"
             for m in self.active_metrics
         ]
 
